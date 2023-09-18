@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Roboto+Mono:ital,wght@0,100;0,200;0,300;1,100;1,200;1,300&display=swap"
+        rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/c9e77d7874.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="./img/hucha.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>AhorrADAs</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar is-info is-black  is-spaced" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item">
+                    <h2 class="title is-size-2-desktop is-size-3 has-text-white">
+                        <i class="fa-solid fa-wallet mr-4"></i>
+                    AhorrADAs
+                    </h2>
+                </a>
+                <div class="navbar-burger" aria-label="menu">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <a class="navbar-item" id="btn-balance">
+                        <i class="fa-solid fa-arrow-trend-up mr-2"></i>
+                        Balance
+                    </a>
+                    <a class="navbar-item" id="btn-categories">
+                        <i class="fa-solid fa-tag mr-2"></i>
+                        Categorías
+                    </a>
+                    <a class="navbar-item" id="btn-reports">
+                        <i class="fa-solid fa-chart-pie mr-2"></i>
+                        Reportes
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="has-background-light">
+        <!-- _______ vista de balance________ -->
+        <section id="balance-container" class="section view">
+            <section class="columns is-multiline is-justify-content-center">
+                <section class="column is-3-widescreen is-4-desktop is-12-tablet">
+                    <!-- _______ seccion de balance_______ -->
+                    <section class="box">
+                        <h3 class="is-size-3 mb-4 has-text-weight-bold">
+                            Balance
+                        </h3>
+                        <article class="columns is-flex">
+                            <p class="column is-size-5">
+                                Ganancias
+                            </p>
+                            <p id="profits" class="column has-text-right has-text-success mr-2">
+                                
+                            </p>
+                        </article>
+                        <article class="columns is-flex">
+                            <p class="column">
+                                Gastos
+                            </p>
+                            <p id="expenses" class="column has-text-right mr-2 has-text-danger">
+                                
+                            </p>
+                        </article>
+                        <article class="columns is-flex">
+                            <p class="column">
+                                Total
+                            </p>
+                            <p id="total-balance" class="column has-text-right mr-2 has-text-weight-bold">
+                                
+                            </p>
+                        </article>
+                    </section>
+                    <!-- _______ seccion de filtros______ -->
+                    <section class="box is-flex is-flex-direction-column">
+                        <section class="column">
+                            <article class="columns">
+                                <h4 class="is-size-4 has-text-weight-bold">
+                                    Filtros
+                                </h4>
+                                <article class="column has-text-right">
+                                    <a href="#">
+                                        Ocultar filtros
+                                    </a>
+                                </article>
+                            </article>
+                        </section>
+                        <form class="column">
+                            <section id="filter">
+                                <section class="field">
+                                    <!-- tipo -->
+                                    <label class="label">
+                                        Tipo
+                                    </label>
+                                    <section class="control">
+                                        <section class="select is-fullwidth">
+                                            <select id="filter-type">
+                                                <option value="todos">
+                                                    Todos
+                                                </option>
+                                                <option value="gasto">
+                                                    Gasto
+                                                </option>
+                                                <option value="ganancia">
+                                                    Ganancia
+                                                </option>
+                                            </select>
+                                        </section>
+                                    </section>
+                                </section>
+                                <!-- categoria -->
+                                <section class="field">
+                                    <label class="label">
+                                        Categoría
+                                    </label>
+                                    <section class="control">
+                                        <section class="select is-fullwidth">
+                                            <select id="filter-category">
+                                                <!-- aca van las actegorias del filtro  -->
+                                            </select>
+                                        </section>
+                                    </section>
+                                </section>
+                                <!-- desde -->
+                                <section class="field">
+                                    <label class="label">
+                                        Desde
+                                    </label>
+                                    <article class="control">
+                                        <input id="filter-date" class="input" type="date"/>
+                                    </article>
+                                </section>
+                                <!-- ordenar por -->
+                                <section class="field">
+                                    <label class="label">
+                                        Ordenar por
+                                    </label>
+                                    <section class="control">
+                                        <article class="select is-fullwidth">
+                                            <select id="filter-order">
+                                                <option value="todos">
+                                                    Más reciente
+                                                </option>
+                                                <option value="gasto">
+                                                    Menos reciente
+                                                </option>
+                                                <option value="ganancia">
+                                                    Mayor monto
+                                                </option>
+                                                <option value="todos">
+                                                    Menor monto
+                                                </option>
+                                                <option value="gasto">
+                                                    A/Z
+                                                </option>
+                                                <option value="ganancia">
+                                                    Z/A
+                                                </option>
+                                            </select>
+                                        </article>
+                                    </section>
+                                </section>
+                            </section>
+                        </form>
+                    </section>
+                </section>
+                <!--****** seccion de operaciones ****** -->
+                <section class="column is-7-widescreen is-8-desktop">
+                    <section class="box">
+                        <section class="columns">
+                            <article class="column">
+                                <h4 class="is-size-4 has-text-weight-bold ml-3">
+                                    Operaciones
+                                </h4>
+                            </article>
+                            <article id="new-operation-btn"  class="column has-text-right-tablet">
+                                <button class="button is-info mr-3">
+                                    + Nueva operacion
+                                </button>
+                            </article>
+                        </section>
+                        <!-- cuando hay operaciones -->
+                        <section id="there-are-operations" class="is-hidden view">
+                            <section class="columns has-text-weight-semibold is-hidden-mobile is-vcentered">
+                                <article class="column">
+                                    <p>
+                                        Descripcion
+                                    </p>
+                                </article>
+                                <article class="column">
+                                    <p>
+                                        Categoría
+                                    </p>
+                                </article>
+                                <article class="column has-text-right">
+                                    <p>
+                                        Fecha
+                                    </p>
+                                </article>
+                                <article class="column has-text-right">
+                                    <p>
+                                        Monto
+                                    </p>
+                                </article>
+                                <article class="column has-text-right">
+                                    <p>
+                                        Acciones
+                                    </p>
+                                </article>
+                            </section>
+                            <section id="operations-table" class="mb-4">
+                                <!-- aca van las operaciones desde js -->
+                            </section>
+                        </section>
+                        <!-- imagen -->
+                        <div class="mt-4 pt-4" id="balance-no-results">
+                            <figure class="image is-3by1">
+                                <img src="./img/undraw_savings_re_eq4w.svg" />
+                            </figure>
+                            <h4 class="is-size-4 has-text-centered mt-6 mb-4 has-text-weight-semibold">
+                                Sin resultados
+                            </h4>
+                            <p class="has-text-centered">
+                                Cambia los filtros o agrega operaciones
+                            </p>
+                        </div>
+                    </section>
+                </section>
+            </section>
+        </section>
+        <!-- vista de agregar nueva operacion -->
+        <section id="new-operation-container"  class="section mt-5 is-hidden view">
+            <section class="columns is-flex is-justify-content-center">
+                <section class="column is-7-widescreen is-10-desktop">
+                    <section class="box">
+                        <section class="column">
+                            <article class="columns">
+                                <h2 class="is-size-2 title has-text-weight-bold">
+                                    Nueva Operación
+                                </h2>
+                            </article>
+                        </section>
+                        <form class="column">
+                            <section class="field mt-6">
+                                <label class="label">
+                                    Descripción
+                                </label>
+                                <article class="control">
+                                    <input id="description-input" class="input" type="text">
+                                </article>
+                            </section>
+                            <section class="field">
+                                <label class="label">
+                                    Monto
+                                </label>
+                                <article class="control">
+                                    <input id="amount-input" class="input" type="number" placeholder="0" />
+                                </article>
+                            </section>
+                            <section class="field">
+                                <!-- tipo -->
+                                <label class="label">
+                                    Tipo
+                                </label>
+                                <section class="control">
+                                    <section class="select is-fullwidth">
+                                        <select id="type-operation">
+                                            <option value="Gasto">
+                                                Gasto
+                                            </option>
+                                            <option value="Ganancia">
+                                                Ganancia
+                                            </option>
+                                        </select>
+                                    </section>
+                                </section>
+                            </section>
+                            <!-- categoria -->
+                            <section class="field">
+                                <label class="label">
+                                    Categoría
+                                </label>
+                                <section class="control">
+                                    <section class="select is-fullwidth">
+                                        <select id="categories-select" class="categories-select">
+                                        </select>
+                                    </section>
+                                </section>
+                            </section>
+                            <!-- desde -->
+                            <section class="field">
+                                <label class="label">
+                                    Fecha
+                                </label>
+                                <article class="control">
+                                    <input class="input" type="date" id="date-input"/>
+                                </article>
+                            </section>
+                            <section class="buttons is-justify-content-flex-end mt-6">
+                                <section class="buttons">
+                                    <button id="btn-cancel-operation" class="button is-light">
+                                        Cancelar
+                                    </button>
+                                    <button id="btn-add-operation" class="button is-info">
+                                        Agregar
+                                    </button>
+                                </section>
+                            </section>
+                        </form>
+                    </section>
+                </section>
+            </section>
+        </section>
+        <!-- vista de editar operacion -->
+        <section id="edit-operation-container"  class="section mt-5 is-hidden view">
+            <section class="columns is-flex is-justify-content-center">
+                <section class="column is-7-widescreen is-10-desktop">
+                    <section class="box">
+                        <section class="column">
+                            <article class="columns">
+                                <h2 class="is-size-2 title has-text-weight-bold">
+                                    Editar Operación
+                                </h2>
+                            </article>
+                        </section>
+                        <form class="column">
+                            <section class="field mt-6">
+                                <label class="label">
+                                    Descripción
+                                </label>
+                                <article class="control">
+                                    <input id="description-input" class="input" type="text">
+                                </article>
+                            </section>
+                            <section class="field">
+                                <label class="label">
+                                    Monto
+                                </label>
+                                <article class="control">
+                                    <input id="amount-input" class="input" type="number" placeholder="0" />
+                                </article>
+                            </section>
+                            <section class="field">
+                                <!-- tipo -->
+                                <label class="label">
+                                    Tipo
+                                </label>
+                                <section class="control">
+                                    <section class="select is-fullwidth">
+                                        <select id="type-operation">
+                                            <option value="Gasto">
+                                                Gasto
+                                            </option>
+                                            <option value="Ganancia">
+                                                Ganancia
+                                            </option>
+                                        </select>
+                                    </section>
+                                </section>
+                            </section>
+                            <!-- categoria -->
+                            <section class="field">
+                                <label class="label">
+                                    Categoría
+                                </label>
+                                <section class="control">
+                                    <section class="select is-fullwidth">
+                                        <select id="categories-select" class="categories-select">
+                                        </select>
+                                    </section>
+                                </section>
+                            </section>
+                            <!-- desde -->
+                            <section class="field">
+                                <label class="label">
+                                    Fecha
+                                </label>
+                                <article class="control">
+                                    <input class="input" type="date" id="date-input"/>
+                                </article>
+                            </section>
+                            <section class="buttons is-justify-content-flex-end mt-6">
+                                <section class="buttons">
+                                    <button id="btns-cancel-operation" class="button is-light">
+                                        Cancelar
+                                    </button>
+                                    <button id="btn-edit-operation" class="button is-info">
+                                        Editar
+                                    </button>
+                                </section>
+                            </section>
+                        </form>
+                    </section>
+                </section>
+            </section>
+        </section>
+        <!-- _______ vista de Categorías________ -->
+        <section id="categories" class="section is-flex is-justify-content-center view is-hidden">
+            <section class="column is-7-widescreen is-8-desktop mb-6 pt-0">
+                <section class="box is-two-thirds">
+                    <section class="columns">
+                        <article class="column">
+                            <h4 class="is-size-3 has-text-weight-bold">
+                                Categorías
+                            </h4>
+                        </article>
+                    </section>
+                    <label class="is-size-6 has-text-weight-bold">
+                        Nombre
+                    </label>
+                    <section class="columns mr-3 mt-2 is-flex is-justify-content-space-evenly">
+                        <input class="input ml-3 mr-3" type="text" />
+                        <button class="button is-info ml-1 mr-3">
+                            Agregar
+                        </button>
+                    </section>
+                    <section class="columns  is-mobile mt-6 mb-4 is-flex is-flex-direction-column mr-3">
+                        <article class="columns ml-0 mr-0 is-flex">
+                            <article class="column is-6-mobile">
+                                <span class="tag is-primary is-light">
+                                    Comida
+                                </span>
+                            </article>
+                            <article class="column has-text-right">
+                                <a class="mr-5" href="#">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </article>
+                        </article>
+                        <article class="columns ml-0 mr-0 is-flex">
+                            <article class="column is-6-mobile">
+                                <span class="tag is-primary is-light">
+                                    Servicios
+                                </span>
+                            </article>
+                            <article class="column has-text-right">
+                                <a class="mr-5" href="#">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </article>
+                        </article>
+                        <article class="columns ml-0 mr-0 is-flex">
+                            <article class="column is-6-mobile">
+                                <span class="tag is-primary is-light">
+                                    Salidas
+                                </span>
+                            </article>
+                            <article class="column has-text-right">
+                                <a class="mr-5" href="#">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </article>
+                        </article>
+                        <article class="columns ml-0 mr-0 is-flex">
+                            <article class="column is-6-mobile">
+                                <span class="tag is-primary is-light">
+                                    Educación
+                                </span>
+                            </article>
+                            <article class="column has-text-right">
+                                <a class="mr-5" href="#">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </article>
+                        </article>
+                        <article class="columns ml-0 mr-0 is-flex">
+                            <article class="column is-6-mobile">
+                                <span class="tag is-primary is-light">
+                                    Transporte
+                                </span>
+                            </article>
+                            <article class="column has-text-right">
+                                <a class="mr-5" href="#">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </article>
+                        </article>
+                        <article class="columns ml-0 mr-0 is-flex">
+                            <article class="column is-6-mobile">
+                                <span class="tag is-primary is-light">
+                                    Trabajo
+                                </span>
+                            </article>
+                            <article class="column has-text-right">
+                                <a class="mr-5" href="#">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </a>
+                                <a href="#">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </article>
+                        </article>
+                    </section>
+                </section>
+            </section>
+        </section>
+        <!-- _______ seccion de Editar Categoría_______ -->
+        <section class="section mt-6 is-hidden view">
+            <section class="column is-7-widescreen is-8-desktop">
+                <section class="box">
+                    <section class="columns">
+                        <article class="column">
+                            <h4 class="is-size-3 has-text-weight-bold">
+                                Editar Categoría
+                            </h4>
+                        </article>
+                    </section>
+                    <label class="is-size-6 has-text-weight-bold">
+                        Nombre
+                    </label>
+                    <section class="columns mr-3 mt-2">
+                        <input class="input ml-3 mr-3" type="text" />
+                    </section>
+                    <section class="columns mt-6 mb-0 is-flex is-justify-content-flex-end mr-3">
+                        <button class="button is-light">
+                            Cancelar
+                        </button>
+                        <button class="button is-info mr-3 ml-3">
+                            Editar
+                        </button>
+                    </section>
+                </section>
+            </section>
+        </section>
+        <!-- _______ Vista de Reportes_______ -->
+        <section id="reports" class="section is-flex is-justify-content-center is-hidden view">
+            <section class="column is-7-widescreen is-8-desktop pt-0">
+                <section class="box is-two-thirds">
+                    <section class="columns">
+                        <article class="column">
+                            <h4 class="is-size-3 has-text-weight-bold">
+                                Reportes
+                            </h4>
+                        </article>
+                    </section>
+                    <div class="mt-4 pt-4 mb-4">
+                        <figure class="image is-3by1">
+                            <img src="img/undraw_charts_re_5qe9.svg" />
+                        </figure>
+                        <h4 class="is-size-4 has-text-centered mt-6 mb-4 has-text-weight-semibold">
+                            Operaciones insuficientes
+                        </h4>
+                        <p class="has-text-centered">
+                            Prueba agregando más operaciones
+                        </p>
+                    </div>
+                </section>
+            </section>
+        </section>
+        <!-- _______ seccion con Reportes_______ -->
+        <section class="section is-flex is-justify-content-center is-hidden view">
+            <section class="column is-7-widescreen is-8-desktop pt-0">
+                <section class="box is-two-thirds">
+                    <section class="columns">
+                        <article class="column">
+                            <h4 class="is-size-3 has-text-weight-bold">
+                                Reportes
+                            </h4>
+                        </article>
+                    </section>
+                    <!-- Resumen -->
+                    <section class="ml-5 mb-6">
+                        <h6 class="is-size-4 mb-5 has-text-weight-bold">
+                            Resumen
+                        </h6>
+                        <article class="columns is-vcentered is-flex is-justify-content-center is-align-items-center">
+                            <h5 class="column has-text-weight-semibold is-4">
+                                Categoría con mayor ganancia
+                            </h5>
+                            <article class="column has-text-right is-5">
+                                <p class="tag is-primary is-light">
+                                    Comida
+                                </p>
+                            </article>
+                            <p class="column has-text-right has-text-success mr-2">
+                                $ +1
+                            </p>
+                        </article>
+                        <article class="columns is-flex is-justify-content-center is-align-items-center">
+                            <h5 class="column has-text-weight-semibold is-4">
+                                Categoría con mayor gasto
+                            </h5>
+                            <article class="column has-text-right is-5">
+                                <p class="tag is-primary is-light">
+                                    Servicios
+                                </p>
+                            </article>
+                            <p class="column has-text-right has-text-danger has-text-weight-bold mr-2">
+                                $ -1
+                            </p>
+                        </article>
+                        <article class="columns is-flex is-justify-content-center is-align-items-center">
+                            <h5 class="column has-text-weight-semibold is-4">
+                                Categoría con mayor balance
+                            </h5>
+                            <article class="column has-text-right is-5">
+                                <p class="tag is-primary is-light">
+                                    Salidas
+                                </p>
+                            </article>
+                            <p class="column has-text-right has-text-weight-bold mr-2">
+                                $ -1
+                            </p>
+                        </article>
+                        <article class="columns is-flex is-justify-content-center is-align-items-center">
+                            <h5 class="column has-text-weight-semibold is-4">
+                                Mes con mayor ganancia
+                            </h5>
+                            <p class="column has-text-right has-text-gray is-5">
+                                02/10/2022
+                            </p>
+                            <p class="column has-text-right has-text-success has-text-weight-bold mr-2">
+                                $ +1
+                            </p>
+                        </article>
+                        <article class="columns is-flex is-justify-content-center is-align-items-center">
+                            <h5 class="column has-text-weight-semibold is-4">
+                                Mes con mayor gasto
+                            </h5>
+                            <p class="column has-text-right has-text-gray is-5">
+                                02/10/2022
+                            </p>
+                            <p class="column has-text-right has-text-danger has-text-weight-bold mr-2">
+                                $-1
+                            </p>
+                        </article>
+                    </section>
+                    <!-- Totales por categorías -->
+                    <section class="ml-5 mr-2 mt-6">
+                        <h6 class="is-size-4 mb-5 has-text-weight-bold">
+                            Totales por categorías
+                        </h6>
+                        <section class="columns  is-vcentered is-flex is-justify-content-center is-align-items-center">
+                            <article class="column has-text-weight-bold">
+                                <p>
+                                    Categoría
+                                </p>
+                            </article>
+                            <article class="column has-text-right has-text-weight-bold">
+                                <p>
+                                    Ganancias
+                                </p>
+                            </article>
+                            <article class="column has-text-right has-text-weight-bold">
+                                <p>
+                                    Gastos
+                                </p>
+                            </article>
+                            <article class="column has-text-right has-text-weight-bold">
+                                <p>
+                                    Balance
+                                </p>
+                            </article>
+                        </section>
+                        <section>
+                            <section class="columns  is-mobile is-flex is-justify-content-center is-align-items-center">
+                                <article class="column has-text-weight-semibold">
+                                    <p>
+                                        Comida
+                                    </p>
+                                </article>
+                                <article class="column has-text-right">
+                                    <p class="has-text-right has-text-success has-text-weight-bold">
+                                        $ +1
+                                    </p>
+                                </article>
+                                <article class="column has-text-right has-text-gray">
+                                    <p class="has-text-right has-text-danger has-text-weight-bold">
+                                        $ -1
+                                    </p>
+                                </article>
+                                <article class="column has-text-right has-text-weight-bold has-text-success">
+                                    <p class="has-text-right has-text-weight-bold ">
+                                        $ -1
+                                    </p>
+                                </article>
+                            </section>
+                            <section class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
+                                <article class="column has-text-weight-semibold">
+                                    <p>
+                                        Servicios
+                                    </p>
+                                </article>
+                                <article class="column  has-text-right">
+                                    <p class="has-text-right has-text-success has-text-weight-bold">
+                                        $ +1
+                                    </p>
+                                </article>
+                                <article class="column has-text-right has-text-gray">
+                                    <p class="has-text-right has-text-danger has-text-weight-bold">
+                                        $ -1
+                                    </p>
+                                </article>
+                                <article class="column has-text-right has-text-weight-bold has-text-success">
+                                    <p class="has-text-right has-text-weight-bold">
+                                        $ -1
+                                    </p>
+                                </article>
+                            </section>
+                            <!-- Totales por mes -->
+                            <section class="mb-4">
+                                <h6 class="is-size-4 mb-5 has-text-weight-bold">
+                                    Totales por mes
+                                </h6>
+                                <section
+                                    class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
+                                    <article class="column has-text-weight-bold">
+                                        <p>
+                                            Mes
+                                        </p>
+                                    </article>
+                                    <article class="column has-text-right has-text-weight-bold">
+                                        <p>
+                                            Ganancias
+                                        </p>
+                                    </article>
+                                    <article class="column has-text-right has-text-weight-bold">
+                                        <p>
+                                            Gastos
+                                        </p>
+                                    </article>
+                                    <article class="column has-text-right has-text-weight-bold">
+                                        <p>
+                                            Balance
+                                        </p>
+                                    </article>
+                                </section>
+                                <section>
+                                    <section
+                                        class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
+                                        <article class="column has-text-weight-semibold">
+                                            <p>
+                                                8/2023
+                                            </p>
+                                        </article>
+                                        <article class="column has-text-right">
+                                            <p class="has-text-right has-text-success has-text-weight-bold">
+                                                $ +1
+                                            </p>
+                                        </article>
+                                        <article class="column has-text-right has-text-gray">
+                                            <p class="has-text-right has-text-danger has-text-weight-bold">
+                                                $ -1
+                                            </p>
+                                        </article>
+                                        <article class="column has-text-right has-text-weight-bold has-text-success">
+                                            <p class="has-text-right has-text-weight-bold">
+                                                $ -1
+                                            </p>
+                                        </article>
+                                    </section>
+                                    <section
+                                        class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
+                                        <article class="column has-text-weight-semibold ">
+                                            <p>
+                                                8/2023
+                                            </p>
+                                        </article>
+                                        <article class="column has-text-right">
+                                            <p class="has-text-right has-text-success has-text-weight-bold">
+                                                $ +1
+                                            </p>
+                                        </article>
+                                        <article class="column has-text-right has-text-gray">
+                                            <p class="has-text-right has-text-danger has-text-weight-bold">
+                                                $ -1
+                                            </p>
+                                        </article>
+                                        <article class="column has-text-right has-text-weight-bold has-text-success">
+                                            <p class="has-text-right has-text-weight-bold">
+                                                $ -1
+                                            </p>
+                                        </article>
+                                    </section>
+                                </section>
+                            </section>
+                        </section>
+                    </section>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
