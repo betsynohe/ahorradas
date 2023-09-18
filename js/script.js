@@ -22,7 +22,6 @@ const showVista = (showView) => {
     $(`#${showView}`).classList.remove("is-hidden");
 };
 
-
 //categorias por defecto
 const defaultCategoriesOptions = [
     {
@@ -54,7 +53,85 @@ const defaultCategoriesOptions = [
 const allCategories = getDataStorage("Categories") || defaultCategoriesOptions;
 const allOperations = getDataStorage("Operations") || []
 
+// seccion de categorias
 
+const renderCategories = (Categories) => {
+    cleanContainers(["#categories-section"])
+    for (const {id, name} of  Categories) { 
+        $("#categories-section").innerHTML +=
+        ` <article class="column is-6-mobile is-flex">
+        <p class="tag is-primary is-light mt-3">
+        ${name}
+        </p>
+        <article class="column has-text-right">
+        <a onclick= editCategoriesForm("${id}") id="${id}" class="mr-5">
+            <i class="fa-solid fa-pencil"></i>
+        </a>
+        <a onclick= deleteCategories("${id}") id="${id}">
+            <i class="fa-solid fa-trash-can"></i>
+        </a>
+    </article>
+    </article>
+    `
+    }
+}
+
+const renderCategoriesOptions = (Categories) => {
+    cleanContainers(["#filter-category", "#categories-select-op"])
+    if (Categories.length){
+        $("#filter-category").innerHTML += `
+        <option value="todas">Todas</option>`
+        for (const {id, name} of  Categories) { 
+        $("#filter-category").innerHTML += `
+        <option value="${id}">${name}</option>
+        `};
+        $$(".categories-select").forEach((select) => {
+        for( const {id, name} of Categories){
+            select.innerHTML +=`
+            <option value="${id}">${name}</option>
+            `
+        }
+        })
+    }
+}
+
+//guarda las categorias
+const saveCategory = (categoryId) => {
+    console.log(categoryId);
+    return {
+        id: categoryId ? categoryId : randomId(),
+        nombre: $("#input-edit-categories").value
+    };
+};
+
+// agregar las categorias
+const addNewCategory = () => {
+    const currentCategory = getDataStorage("Categories");
+    const newCategory = saveCategory();
+    currentCategory.push(newCategory);
+    setDataStorage("Categories", currentCategory);
+    renderCategories(currentCategory);
+    renderCategoriesOptions(currentCategory);
+};
+
+//edit category
+const editCategory = () => {
+    const categoryId= $("#btn-confirm-add").getAttribute("data-id")
+    const editedCategory= getDataStorage("Categories").map(category => {
+        if (category.id === categoryId){
+            return saveCategory(categoryId)
+        }
+        return category
+    })
+    setDataStorage("Categories", editedCategory)
+}
+
+const editCategoriesForm = (id) => {
+    $(showVista("edit-categories"))
+    $("#btn-confirm-add").setAttribute("data-id", id)
+    const categorySelected = getDataStorage("Categories").find(category => category.id === id)
+    $("#input-edit-categories").value = categorySelected.name
+}
 
 
 
@@ -63,7 +140,9 @@ const allOperations = getDataStorage("Operations") || []
 const initializeApp = () => {
     setDataStorage("Categories", allCategories);
     setDataStorage("Operations", allOperations);
-    renderOperations(allOperations)
+    renderCategories(allCategories)
+    renderCategoriesOptions(allCategories)
+    /* renderOperations(allOperations) */
     
     
 /* boton del menu de hamburguesa */
@@ -80,7 +159,7 @@ const initializeApp = () => {
 
 // click btn categories
     $("#btn-categories").addEventListener("click", () =>
-    showVista("categories")
+    showVista("category-section")
     );
 
 // click btn balance 
@@ -120,6 +199,12 @@ const initializeApp = () => {
     $("#btn-cancel-operation").addEventListener("click", () => {
     showVista("balance-container")
     });
+// edita la nueva categoria
+    $("#btn-confirm-add").addEventListener("click", () => {
+            editCategory()
+            showVista("category-section")
+            renderCategories(getDataStorage("Categories"))
+    })
 /*  $("#filter-type").addEventListener ("change", filters)
 
     $("#filter-category").addEventListener ("change", filters)
