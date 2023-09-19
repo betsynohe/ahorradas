@@ -227,7 +227,7 @@
                                 <!-- aca van las operaciones desde js -->
                             </section>
                         </section>
-                        <!-- imagen -->
+                        <!-- imagen cuando no hay operaciones -->
                         <div class="mt-4 pt-4" id="balance-no-results">
                             <figure class="image is-3by1">
                                 <img src="./img/undraw_savings_re_eq4w.svg" />
@@ -297,7 +297,8 @@
                                 </label>
                                 <section class="control">
                                     <section class="select is-fullwidth">
-                                        <select id="categories-select" class="categories-select">
+                                        <select id="categories-select-op" class="categories-select">
+                                            <!-- aca van las categorias desde el js -->
                                         </select>
                                     </section>
                                 </section>
@@ -381,6 +382,7 @@
                                 <section class="control">
                                     <section class="select is-fullwidth">
                                         <select id="categories-select" class="categories-select">
+                                            <!-- aqui van las actegorias desde js -->
                                         </select>
                                     </section>
                                 </section>
@@ -410,7 +412,7 @@
             </section>
         </section>
         <!-- _______ vista de Categorías________ -->
-        <section id="categories" class="section is-flex is-justify-content-center view is-hidden">
+        <section id="category-section" class="section is-flex is-justify-content-center view is-hidden">
             <section class="column is-7-widescreen is-8-desktop mb-6 pt-0">
                 <section class="box is-two-thirds">
                     <section class="columns">
@@ -424,108 +426,24 @@
                         Nombre
                     </label>
                     <section class="columns mr-3 mt-2 is-flex is-justify-content-space-evenly">
-                        <input class="input ml-3 mr-3" type="text" />
-                        <button class="button is-info ml-1 mr-3">
+                        <input id="category-name" class="input ml-3 mr-3" type="text" />
+                        <button id="btn-add-categories" class="button is-info ml-1 mr-3">
                             Agregar
                         </button>
                     </section>
                     <section class="columns  is-mobile mt-6 mb-4 is-flex is-flex-direction-column mr-3">
-                        <article class="columns ml-0 mr-0 is-flex">
+                        <article id="categories-section" class="columns ml-0 mr-0 is-flex is-flex-direction-column">
                             <article class="column is-6-mobile">
                                 <span class="tag is-primary is-light">
-                                    Comida
+                                    <!-- aqui van las categorias desde js -->
                                 </span>
                             </article>
-                            <article class="column has-text-right">
-                                <a class="mr-5" href="#">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </a>
-                            </article>
-                        </article>
-                        <article class="columns ml-0 mr-0 is-flex">
-                            <article class="column is-6-mobile">
-                                <span class="tag is-primary is-light">
-                                    Servicios
-                                </span>
-                            </article>
-                            <article class="column has-text-right">
-                                <a class="mr-5" href="#">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </a>
-                            </article>
-                        </article>
-                        <article class="columns ml-0 mr-0 is-flex">
-                            <article class="column is-6-mobile">
-                                <span class="tag is-primary is-light">
-                                    Salidas
-                                </span>
-                            </article>
-                            <article class="column has-text-right">
-                                <a class="mr-5" href="#">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </a>
-                            </article>
-                        </article>
-                        <article class="columns ml-0 mr-0 is-flex">
-                            <article class="column is-6-mobile">
-                                <span class="tag is-primary is-light">
-                                    Educación
-                                </span>
-                            </article>
-                            <article class="column has-text-right">
-                                <a class="mr-5" href="#">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </a>
-                            </article>
-                        </article>
-                        <article class="columns ml-0 mr-0 is-flex">
-                            <article class="column is-6-mobile">
-                                <span class="tag is-primary is-light">
-                                    Transporte
-                                </span>
-                            </article>
-                            <article class="column has-text-right">
-                                <a class="mr-5" href="#">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </a>
-                            </article>
-                        </article>
-                        <article class="columns ml-0 mr-0 is-flex">
-                            <article class="column is-6-mobile">
-                                <span class="tag is-primary is-light">
-                                    Trabajo
-                                </span>
-                            </article>
-                            <article class="column has-text-right">
-                                <a class="mr-5" href="#">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </a>
-                                <a href="#">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </a>
-                            </article>
-                        </article>
                     </section>
                 </section>
             </section>
         </section>
         <!-- _______ seccion de Editar Categoría_______ -->
-        <section class="section mt-6 is-hidden view">
+        <section id="edit-categories" class="section mt-6 is-hidden view">
             <section class="column is-7-widescreen is-8-desktop">
                 <section class="box">
                     <section class="columns">
@@ -539,13 +457,13 @@
                         Nombre
                     </label>
                     <section class="columns mr-3 mt-2">
-                        <input class="input ml-3 mr-3" type="text" />
+                        <input id="input-edit-categories" class="input ml-3 mr-3" type="text" />
                     </section>
                     <section class="columns mt-6 mb-0 is-flex is-justify-content-flex-end mr-3">
                         <button class="button is-light">
                             Cancelar
                         </button>
-                        <button class="button is-info mr-3 ml-3">
+                        <button id="btn-confirm-add" class="button is-info mr-3 ml-3">
                             Editar
                         </button>
                     </section>
