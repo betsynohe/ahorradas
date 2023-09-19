@@ -103,10 +103,6 @@ const saveCategory = (categoryId) => {
         id: categoryId ? categoryId : randomId(),
         name: name,
     };
-  /*   return {
-        id: randomId(),
-        name: $("#input-edit-categories").value
-    }; */
 };
 
 // agregar las categorias
