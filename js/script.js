@@ -50,14 +50,14 @@ const defaultCategoriesOptions = [
     },
 ];
 
-const allCategories = getDataStorage("Categories") || defaultCategoriesOptions;
-const allOperations = getDataStorage("Operations") || []
+const allCategories = getDataStorage("categories") || defaultCategoriesOptions;
+const allOperations = getDataStorage("operations") || []
 
 // seccion de categorias
 
-const renderCategories = (Categories) => {
+const renderCategories = (categories) => {
     cleanContainers(["#categories-section"])
-    for (const {id, name} of  Categories) { 
+    for (const {id, name} of  categories) { 
         $("#categories-section").innerHTML +=
         ` <article class="column is-6-mobile is-flex">
         <p class="tag is-primary is-light mt-3">
@@ -76,17 +76,17 @@ const renderCategories = (Categories) => {
     }
 }
 
-const renderCategoriesOptions = (Categories) => {
+const renderCategoriesOptions = (categories) => {
     cleanContainers(["#filter-category", "#categories-select-op"])
-    if (Categories.length){
+    if (categories.length){
         $("#filter-category").innerHTML += `
         <option value="todas">Todas</option>`
-        for (const {id, name} of  Categories) { 
+        for (const {id, name} of  categories) { 
         $("#filter-category").innerHTML += `
         <option value="${id}">${name}</option>
         `};
         $$(".categories-select").forEach((select) => {
-        for( const {id, name} of Categories){
+        for( const {id, name} of categories){
             select.innerHTML +=`
             <option value="${id}">${name}</option>
             `
@@ -97,39 +97,45 @@ const renderCategoriesOptions = (Categories) => {
 
 //guarda las categorias
 const saveCategory = (categoryId) => {
-    console.log(categoryId);
+    const inputField = categoryId ? "#input-edit-categories" : "#category-name";
+    const name = $(inputField).value;
     return {
         id: categoryId ? categoryId : randomId(),
-        nombre: $("#input-edit-categories").value
+        name: name,
     };
+  /*   return {
+        id: randomId(),
+        name: $("#input-edit-categories").value
+    }; */
 };
 
 // agregar las categorias
 const addNewCategory = () => {
-    const currentCategory = getDataStorage("Categories");
+    const currentCategory = getDataStorage("categories");
     const newCategory = saveCategory();
     currentCategory.push(newCategory);
-    setDataStorage("Categories", currentCategory);
+    setDataStorage("categories", currentCategory);
     renderCategories(currentCategory);
     renderCategoriesOptions(currentCategory);
+    console.log(newCategory);
 };
 
 //edit category
 const editCategory = () => {
     const categoryId= $("#btn-confirm-add").getAttribute("data-id")
-    const editedCategory= getDataStorage("Categories").map(category => {
+    const editedCategory= getDataStorage("categories").map(category => {
         if (category.id === categoryId){
             return saveCategory(categoryId)
         }
         return category
     })
-    setDataStorage("Categories", editedCategory)
+    setDataStorage("categories", editedCategory)
 }
 
 const editCategoriesForm = (id) => {
     $(showVista("edit-categories"))
     $("#btn-confirm-add").setAttribute("data-id", id)
-    const categorySelected = getDataStorage("Categories").find(category => category.id === id)
+    const categorySelected = getDataStorage("categories").find(category => category.id === id)
     $("#input-edit-categories").value = categorySelected.name
 }
 
@@ -138,8 +144,8 @@ const editCategoriesForm = (id) => {
 
 // FUNCION PARA INICIALIZAR LA APP 
 const initializeApp = () => {
-    setDataStorage("Categories", allCategories);
-    setDataStorage("Operations", allOperations);
+    setDataStorage("categories", allCategories);
+    setDataStorage("operations", allOperations);
     renderCategories(allCategories)
     renderCategoriesOptions(allCategories)
     /* renderOperations(allOperations) */
@@ -199,12 +205,20 @@ const initializeApp = () => {
     $("#btn-cancel-operation").addEventListener("click", () => {
     showVista("balance-container")
     });
-// edita la nueva categoria
+
+//agrega una nueva categoria
+    $("#btn-add-categories").addEventListener("click", () => {
+            addNewCategory();
+            $("#category-name").value = "";
+    })
+
+// edita la categoria
     $("#btn-confirm-add").addEventListener("click", () => {
             editCategory()
             showVista("category-section")
-            renderCategories(getDataStorage("Categories"))
+            renderCategories(getDataStorage("categories"))
     })
+
 /*  $("#filter-type").addEventListener ("change", filters)
 
     $("#filter-category").addEventListener ("change", filters)
