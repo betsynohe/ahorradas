@@ -232,7 +232,11 @@ const getEditOperation = () => {
 };
 
 const editOperation = (id) => {
-    $(showVista("edit-operation-container"));
+    $(showVista("new-operation-container"));
+    $(".title-edit").classList.remove("is-hidden")
+    $(".title-operation").classList.add("is-hidden")
+    $("#btn-add-operation").classList.add("is-hidden")
+    $("#btn-edit-operation").classList.remove("is-hidden")
     $("#btn-edit-operation").setAttribute("data-id", id);
     const editSelected = getDataStorage("operations").find((operation) => operation.id === id);
     $("#description-input").value = editSelected.description;
@@ -241,7 +245,6 @@ const editOperation = (id) => {
     $("#categories-select-op").value = editSelected.category;
     $("#date-input").value = editSelected.date;
 };
-
 
 
 // FUNCION PARA INICIALIZAR LA APP 
@@ -298,12 +301,8 @@ const initializeApp = () => {
     $("#edit-operation-container").classList.add("is-hidden")
     });
 
-//cancela editar la operacion
-    $("#btns-cancel-operation").addEventListener("click", () => {
-    showVista("balance-container")
-    });
-
 // cancela una nueva operacion
+//cancela editar la operacion
     $("#btn-cancel-operation").addEventListener("click", () => {
     showVista("balance-container")
     });

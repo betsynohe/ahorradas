@@ -244,14 +244,18 @@
             </section>
         </section>
         <!-- vista de agregar nueva operacion -->
+        <!-- vista de editar operacion -->
         <section id="new-operation-container"  class="section mt-5 is-hidden view">
             <section class="columns is-flex is-justify-content-center">
                 <section class="column is-7-widescreen is-10-desktop">
                     <section class="box">
                         <section class="column">
                             <article class="columns">
-                                <h2 class="is-size-2 title has-text-weight-bold">
+                                <h2 class="is-size-2 title has-text-weight-bold title-operation">
                                     Nueva Operación
+                                </h2>
+                                <h2 class="is-size-2 title has-text-weight-bold title-edit is-hidden">
+                                    Editar Operación
                                 </h2>
                             </article>
                         </section>
@@ -320,88 +324,7 @@
                                     <button id="btn-add-operation" class="button is-info">
                                         Agregar
                                     </button>
-                                </section>
-                            </section>
-                        </form>
-                    </section>
-                </section>
-            </section>
-        </section>
-        <!-- vista de editar operacion -->
-        <section id="edit-operation-container"  class="section mt-5 is-hidden view">
-            <section class="columns is-flex is-justify-content-center">
-                <section class="column is-7-widescreen is-10-desktop">
-                    <section class="box">
-                        <section class="column">
-                            <article class="columns">
-                                <h2 class="is-size-2 title has-text-weight-bold">
-                                    Editar Operación
-                                </h2>
-                            </article>
-                        </section>
-                        <form class="column">
-                            <section class="field mt-6">
-                                <label class="label">
-                                    Descripción
-                                </label>
-                                <article class="control">
-                                    <input id="description-input" class="input" type="text">
-                                </article>
-                            </section>
-                            <section class="field">
-                                <label class="label">
-                                    Monto
-                                </label>
-                                <article class="control">
-                                    <input id="amount-input" class="input" type="number" placeholder="0" />
-                                </article>
-                            </section>
-                            <section class="field">
-                                <!-- tipo -->
-                                <label class="label">
-                                    Tipo
-                                </label>
-                                <section class="control">
-                                    <section class="select is-fullwidth">
-                                        <select id="type-operation">
-                                            <option value="Gasto">
-                                                Gasto
-                                            </option>
-                                            <option value="Ganancia">
-                                                Ganancia
-                                            </option>
-                                        </select>
-                                    </section>
-                                </section>
-                            </section>
-                            <!-- categoria -->
-                            <section class="field">
-                                <label class="label">
-                                    Categoría
-                                </label>
-                                <section class="control">
-                                    <section class="select is-fullwidth">
-                                        <select id="categories-select" class="categories-select">
-                                            <!-- aqui van las actegorias desde js -->
-                                        </select>
-                                    </section>
-                                </section>
-                            </section>
-                            <!-- desde -->
-                            <section class="field">
-                                <label class="label">
-                                    Fecha
-                                </label>
-                                <article class="control">
-                                    <input class="input" type="date" id="date-input"/>
-                                </article>
-                            </section>
-                            <section class="buttons is-justify-content-flex-end mt-6">
-                                <section class="buttons">
-                                    <button id="btns-cancel-operation" class="button is-light">
-                                        Cancelar
-                                    </button>
-                                    <button id="btn-edit-operation" class="button is-info">
+                                    <button id="btn-edit-operation" class="button is-info is-hidden">
                                         Editar
                                     </button>
                                 </section>
