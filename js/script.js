@@ -296,8 +296,8 @@ const generateBalance = (operations) => {
 const filters = () => {
     const type = $("#filter-type").value
     const category = $("#filter-category").value
-    const date = new Date($("#filter-date").value)
-    const filterS = $("#filter-order").value
+    const date = new Date($("#filter-date").value.replace(/-/g, '/'))
+    const orderFilter = $("#filter-order").value
 
     const filterType = getDataStorage("operations").filter((operation) => {
         if (type === "todos") {
@@ -305,7 +305,7 @@ const filters = () => {
         }
         return type === operation.type
     })
-
+    
     const filterCategory = filterType.filter((operation) => {
         if (category === "todas") {
             return operation
@@ -313,25 +313,25 @@ const filters = () => {
             return category === operation.category
         }
     })
-
+    
     const filterDate = filterCategory.filter((operation) => {
         return new Date(operation.date).getDate() >= date.getDate() && new Date(operation.date).getMonth() >= date.getMonth()
     })
-
-   const filterSort = filterDate.sort((a, b) => {
-        if (filterS === "mas-reciente"){
+    console.log(filterDate);
+    const filterSort = filterDate.sort((a, b) => {
+        if (orderFilter === "mas-reciente"){
             return new Date(b.date).getDate() - new Date(a.date).getDate()
         } 
-        if (filterS === "menos-reciente") {
+        if (orderFilter === "menos-reciente") {
             return new Date(a.date).getDate() - new Date(b.date).getDate()
         }
-        if (filterS === "mayo-monto") {
+        if (orderFilter === "mayor-monto") {
             return b.amount - a.amount
         }
-        if (filterS === "menor-monto") {
+        if (orderFilter === "menor-monto") {
             return a.amount - b.amount
         }
-        if (filterS === "a/z") {
+        if (orderFilter === "a/z") {
             if (a.description.toUpperCase() < b.description.toUpperCase()) {
                 return -1
             }
@@ -341,10 +341,10 @@ const filters = () => {
                 return -1
             }
         }
-   })
+})
 
-   getBalance(filterSort)
-   return renderOperations(filterSort)
+    getBalance(filterSort)
+    renderOperations(filterSort)
 }
 
 
@@ -423,9 +423,26 @@ const initializeApp = () => {
             renderCategories(getDataStorage("categories"))
     })
 //cancela la edicion de la categoria
-    $("#btn-cancel-categories").addEventListener("click",() =>{
+    $("#btn-cancel-categories").addEventListener("click", () =>{
         showVista("category-section")
     })
+
+//oculta el panel de los filtros
+    $("#hidden-filters").addEventListener("click", (e) =>{
+        e.preventDefault()
+        $("#hidden-filters").classList.add("is-hidden")
+        $("#panel-filters").classList.add("is-hidden")
+        $("#show-filters").classList.remove("is-hidden")
+    })
+
+//aparecen los filtros de nuevo
+    $("#show-filters").addEventListener("click", (e) =>{
+        e.preventDefault()
+        $("#show-filters").classList.add("is-hidden")
+        $("#panel-filters").classList.remove("is-hidden")
+        $("#hidden-filters").classList.remove("is-hidden")
+    })
+
 
     $("#filter-type").addEventListener ("change", filters)
     $("#filter-category").addEventListener ("change", filters)
