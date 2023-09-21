@@ -135,6 +135,14 @@ const editCategoriesForm = (id) => {
     $("#input-edit-categories").value = categorySelected.name
 }
 
+//elimina las categorias
+const deleteCategories = (id) => {
+    currentCategories = getDataStorage("categories").filter(
+        (category) => category.id !== id)
+    setDataStorage("categories", currentCategories)
+    renderCategories(currentCategories)
+}
+
 /* **** VISTA DE OPERACIONES **** */
 
 // CARGAR OPERACION
@@ -319,7 +327,10 @@ const initializeApp = () => {
             showVista("category-section")
             renderCategories(getDataStorage("categories"))
     })
-
+//cancela la edicion de la categoria
+    $("#btn-cancel-categories").addEventListener("click",() =>{
+        showVista("category-section")
+    })
 /*  $("#filter-type").addEventListener ("change", filters)
 
     $("#filter-category").addEventListener ("change", filters)
