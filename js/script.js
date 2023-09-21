@@ -223,6 +223,7 @@ const deleteOperation = (id) => {
     );
     setDataStorage("operations", currentOperations);
     renderOperations(currentOperations);
+    getBalance(allOperations)
 };
 
 //editar operaciones
@@ -237,6 +238,7 @@ const getEditOperation = () => {
     });
     setDataStorage("operations", editedOperations);
     renderOperations(editedOperations);
+    getBalance(allOperations)
 };
 
 const editOperation = (id) => {
@@ -254,6 +256,41 @@ const editOperation = (id) => {
     $("#date-input").value = editSelected.date;
 };
 
+/* *******VISTA DE BALANCE******** */
+
+const getBalance = (operations) => {
+    //balance
+    let expense = 0;
+    let profit = 0;
+    let balance = 0;
+
+     //render balance
+    for (const { type, amount } of operations){
+        if (type === "Ganancia") {
+        profit += parseFloat(amount);
+        balance += parseFloat(amount);
+    }
+        if (type === "Gasto") {
+        expense -= parseFloat(amount);
+        balance -= parseFloat(amount);
+    }
+    }
+    return {
+        profit: profit,
+        expense: expense,
+        balance: balance
+    }
+}
+
+const generateBalance = (operations) => {
+    const { profit, expense, balance } = getBalance(operations)
+    $("#profits").innerHTML = `+ $ ` + profit;
+    $("#expenses").innerHTML = `$ ` + expense;
+    let className = balance > 0 ? "has-text-success" : balance < 0 ? "has-text-danger" : "has-text-black";
+    let symbol = balance > 0 ? "+" : balance < 0 ? "-" : "";
+    $("#total-balance").innerHTML = `<span class="${className}">${symbol} $ ${Math.abs(balance)}</span>`;
+}
+
 
 // FUNCION PARA INICIALIZAR LA APP 
 const initializeApp = () => {
@@ -262,6 +299,8 @@ const initializeApp = () => {
     renderCategories(allCategories)
     renderCategoriesOptions(allCategories)
     renderOperations(allOperations)
+    generateBalance(allOperations)
+    getBalance(allOperations)
     
     
 /* boton del menu de hamburguesa */
