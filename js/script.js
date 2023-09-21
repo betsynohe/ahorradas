@@ -291,6 +291,62 @@ const generateBalance = (operations) => {
     $("#total-balance").innerHTML = `<span class="${className}">${symbol} $ ${Math.abs(balance)}</span>`;
 }
 
+/* *******FILTROS DE LA VISTA DE BALANCE******* */ 
+
+const filters = () => {
+    const type = $("#filter-type").value
+    const category = $("#filter-category").value
+    const date = new Date($("#filter-date").value)
+    const filterS = $("#filter-order").value
+
+    const filterType = getDataStorage("operations").filter((operation) => {
+        if (type === "todos") {
+            return operation
+        }
+        return type === operation.type
+    })
+
+    const filterCategory = filterType.filter((operation) => {
+        if (category === "todas") {
+            return operation
+        } else {
+            return category === operation.category
+        }
+    })
+
+    const filterDate = filterCategory.filter((operation) => {
+        return new Date(operation.date).getDate() >= date.getDate() && new Date(operation.date).getMonth() >= date.getMonth()
+    })
+
+   const filterSort = filterDate.sort((a, b) => {
+        if (filterS === "mas-reciente"){
+            return new Date(b.date).getDate() - new Date(a.date).getDate()
+        } 
+        if (filterS === "menos-reciente") {
+            return new Date(a.date).getDate() - new Date(b.date).getDate()
+        }
+        if (filterS === "mayo-monto") {
+            return b.amount - a.amount
+        }
+        if (filterS === "menor-monto") {
+            return a.amount - b.amount
+        }
+        if (filterS === "a/z") {
+            if (a.description.toUpperCase() < b.description.toUpperCase()) {
+                return -1
+            }
+        }
+        else {
+            if (b.description.toUpperCase() < a.description.toUpperCase()) {
+                return -1
+            }
+        }
+   })
+
+   getBalance(filterSort)
+   return renderOperations(filterSort)
+}
+
 
 // FUNCION PARA INICIALIZAR LA APP 
 const initializeApp = () => {
@@ -301,7 +357,7 @@ const initializeApp = () => {
     renderOperations(allOperations)
     generateBalance(allOperations)
     getBalance(allOperations)
-    
+    filters()
     
 /* boton del menu de hamburguesa */
     $('.navbar-burger').addEventListener('click', () => {
@@ -370,13 +426,11 @@ const initializeApp = () => {
     $("#btn-cancel-categories").addEventListener("click",() =>{
         showVista("category-section")
     })
-/*  $("#filter-type").addEventListener ("change", filters)
 
+    $("#filter-type").addEventListener ("change", filters)
     $("#filter-category").addEventListener ("change", filters)
-
     $("#filter-date").addEventListener ("change", filters)
-
-    $("#filter-order").addEventListener ("change", filters) */
+    $("#filter-order").addEventListener ("change", filters)
 };
 
 
