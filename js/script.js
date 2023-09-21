@@ -53,7 +53,7 @@ const defaultCategoriesOptions = [
 const allCategories = getDataStorage("categories") || defaultCategoriesOptions;
 const allOperations = getDataStorage("operations") || []
 
-// seccion de categorias
+/* ********* CATEGORIAS ********* */
 
 const renderCategories = (categories) => {
     cleanContainers(["#categories-section"])
@@ -105,7 +105,7 @@ const saveCategory = (categoryId) => {
     };
 };
 
-// agregar las categorias
+// agrega las categorias nuevas
 const addNewCategory = () => {
     const currentCategory = getDataStorage("categories");
     const newCategory = saveCategory();
@@ -116,7 +116,7 @@ const addNewCategory = () => {
     console.log(newCategory);
 };
 
-//edit category
+//edita las categorias
 const editCategory = () => {
     const categoryId= $("#btn-confirm-add").getAttribute("data-id")
     const editedCategory= getDataStorage("categories").map(category => {
@@ -135,7 +135,116 @@ const editCategoriesForm = (id) => {
     $("#input-edit-categories").value = categorySelected.name
 }
 
+/* **** VISTA DE OPERACIONES **** */
 
+// CARGAR OPERACION
+
+const saveNewOperation = (operationId) => {
+    return {
+        id: operationId ? operationId : randomId(),
+        description: $("#description-input").value,
+        amount: $("#amount-input").value,
+        type: $("#type-operation").value,
+        category: $("#categories-select-op").value,
+        date: new Date($("#date-input").value.replace(/-/g, "/")),
+    };
+};
+
+// AGREGA LAS OPERACIONES
+const renderOperations = (operations) => {
+    cleanContainers(["#operations-table"]);
+    if (allOperations.length) {
+        $("#balance-no-results").classList.add("is-hidden");
+        $("#there-are-operations").classList.remove("is-hidden");
+        for (const { id, description, amount, type, category, date} of operations) {
+            const spentAmount = type === "Ganancia" ? "has-text-success" : "has-text-danger";
+            const gainAmount = type === "Ganancia" ? "+" : "-";
+            const categorySelected = getDataStorage("categories").find(catego => catego.id === category)
+            $("#operations-table").innerHTML += ` <section class="columns is-multiline is-mobile">
+            <article class="column has-text-weight-semibold is-6-mobile">
+                <p>
+                ${description}
+                </p>
+            </article>
+            <article class="column is-6-mobile">
+                <span class="tag is-primary is-light">
+                ${categorySelected.name}
+                </span>
+            </article>
+            <article class="column has-text-right has-text-gray is-hidden-mobile">
+                <p>
+                ${new Date(date).getDate()}/${new Date(date).getMonth() + 1}/${new Date(date).getFullYear()}
+                </p>
+            </article>
+            <article
+                class="${spentAmount} column has-text-right has-text-weight-bold has-text-success is-size-4-mobile is-6-mobile is-2-tablet has-text-left-mobile">
+                <p>
+                ${gainAmount} ${amount}
+                </p>
+            </article>
+            <article class=" has-text-right buttons">
+                <button class="mr-5 button" onclick="editOperation('${id}')">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+                <button class="button" onclick="deleteOperation('${id}')">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </article>
+        </section>`;
+        }
+    } else {
+        $("#balance-no-results").classList.remove("is-hidden");
+        $("#there-are-operations").classList.add("is-hidden");
+    }
+};
+
+
+//agrega la operacion
+const addOperationForm = () => {
+    const currentOperations = getDataStorage("operations");
+    const newOperation = saveNewOperation();
+    currentOperations.push(newOperation);
+    setDataStorage("operations", currentOperations);
+    renderOperations(currentOperations);
+};
+
+//elimina la operacion
+const deleteOperation = (id) => {
+    currentOperations = getDataStorage("operations").filter(
+        (operation) => operation.id !== id
+    );
+    setDataStorage("operations", currentOperations);
+    renderOperations(currentOperations);
+};
+
+//editar operaciones
+const getEditOperation = () => {
+    $(showVista("balance-container"));
+    const operationId = $("#btn-edit-operation").getAttribute("data-id");
+    const editedOperations = getDataStorage("operations").map((operation) => {
+        if (operation.id === operationId) {
+            return saveNewOperation(operationId);
+        }
+        return operation;
+    });
+    setDataStorage("operations", editedOperations);
+    renderOperations(editedOperations);
+};
+
+const editOperation = (id) => {
+    $(showVista("new-operation-container"));
+    $(".title-edit").classList.remove("is-hidden")
+    $(".title-operation").classList.add("is-hidden")
+    $("#btn-add-operation").classList.add("is-hidden")
+    $("#btn-edit-operation").classList.remove("is-hidden")
+    $("#btn-edit-operation").setAttribute("data-id", id);
+    const editSelected = getDataStorage("operations").find((operation) => operation.id === id);
+    $("#description-input").value = editSelected.description;
+    $("#amount-input").valueAsNumber = editSelected.amount;
+    $("#type-operation").value = editSelected.type;
+    $("#categories-select-op").value = editSelected.category;
+    $("#date-input").value = editSelected.date;
+};
 
 
 // FUNCION PARA INICIALIZAR LA APP 
@@ -144,7 +253,7 @@ const initializeApp = () => {
     setDataStorage("operations", allOperations);
     renderCategories(allCategories)
     renderCategoriesOptions(allCategories)
-    /* renderOperations(allOperations) */
+    renderOperations(allOperations)
     
     
 /* boton del menu de hamburguesa */
@@ -192,12 +301,8 @@ const initializeApp = () => {
     $("#edit-operation-container").classList.add("is-hidden")
     });
 
-//cancela editar la operacion
-    $("#btns-cancel-operation").addEventListener("click", () => {
-    showVista("balance-container")
-    });
-
 // cancela una nueva operacion
+//cancela editar la operacion
     $("#btn-cancel-operation").addEventListener("click", () => {
     showVista("balance-container")
     });
