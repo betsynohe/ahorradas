@@ -291,6 +291,99 @@ const generateBalance = (operations) => {
     $("#total-balance").innerHTML = `<span class="${className}">${symbol} $ ${Math.abs(balance)}</span>`;
 }
 
+/* VISTA DE REPORTES */
+
+const renderReports = () => {
+    const currentOperations = getDataStorage("operations")
+    const allCategories = getDataStorage("categories")
+    let hasProfit = false
+    let hasExpenditure = false
+    
+    for (const { type } of currentOperations) {
+        if (type === "ganancia") {
+            hasProfit = true
+        } else if (type === "gasto") {
+            hasExpenditure = true
+        }
+    }
+
+    if (hasProfit && hasExpenditure) {
+        $("#reports-table").classList.remove("is-hidden")
+        $("#reports").classList.add("is-hidden")
+        summaryByCategories(currentOperations, allCategories)
+        summaryByMonths(currentOperations)
+        totalsForCategory(currentOperations, allCategories)
+        totalsPerMonth(currentOperations)
+        generateTotalsForCategory(currentOperations, allCategories)
+        generateTotalsPerMonth(currentOperations)
+
+    } else {
+        $("#reports").classList.remove("is-hidden")
+        $("#reports-table").classList.add("is-hidden")
+    }
+}
+
+//reportes por categorias
+const summaryByCategories = (operations, categories) => {
+    const categoryTotals = {}
+    for (const { category, amount, type } of operations) {
+        if (!categoryTotals[category]) {
+            categoryTotals[category] = {
+            profit: 0,
+            expense: 0,
+            }
+        }
+        if (type === "ganancia") {
+            categoryTotals[category].profit += amount;
+        } else if (type === "gasto") {
+            categoryTotals[category].expense += amount;
+        }
+    }
+    
+    let maxCategoryProfits = ""
+    let maxAmountProfits = 0
+    let maxCategoryExpenses = ""
+    let maxAmountExpenses = 0
+    let maxCategoryBalance = ""
+    let maxAmountBalance = 0
+
+    for (const category in categoryTotals) {
+        const { profit, expense } = categoryTotals[category]
+        const balance = profit - expense
+        
+        if (profit > maxAmountProfits) {
+            maxAmountProfits = profit
+            maxCategoryProfits = category
+        }
+        if (expense > maxAmountExpenses){
+            maxAmountExpenses = expense
+            maxCategoryExpenses = category
+        }
+        if (balance > maxAmountBalance){
+            maxAmountBalance = balance
+            maxCategoryBalance = category
+        }
+    }
+
+    for (const { id, name } of categories){
+        if (id === maxCategoryProfits){
+            $("#highest-category-profits").innerHTML = name 
+            $("#total-hg-category-profits").innerHTML = `+$${maxAmountProfits}`  
+        }
+        if (id === maxCategoryExpenses) {
+            $("#highest-category-expenses").innerHTML = name
+            $("#total-hg-category-expenses").innerHTML = `-$${maxAmountExpenses}`
+        }
+        if (id === maxCategoryBalance){
+            $("#highest-category-balance").innerHTML = name
+            $("#total-hg-category-balance").innerHTML = `$${maxAmountBalance}`
+        }
+    }
+}
+
+
+
+
 //funcion para que este el dia actual en los imputs
 const dateInput = () => {
     const inputsFecha = document.querySelectorAll('input[type="date"]');
