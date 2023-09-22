@@ -292,6 +292,9 @@ const generateBalance = (operations) => {
 }
 
 
+
+
+
 // FUNCION PARA INICIALIZAR LA APP 
 const initializeApp = () => {
     setDataStorage("categories", allCategories);
@@ -301,7 +304,6 @@ const initializeApp = () => {
     renderOperations(allOperations)
     generateBalance(allOperations)
     getBalance(allOperations)
-    
     
 /* boton del menu de hamburguesa */
     $('.navbar-burger').addEventListener('click', () => {
@@ -315,7 +317,7 @@ const initializeApp = () => {
     }
     })
 
-// click btn categories
+// click btn categorias
     $("#btn-categories").addEventListener("click", () =>
     showVista("category-section")
     );
@@ -325,7 +327,7 @@ const initializeApp = () => {
     showVista("balance-container")
     );
 
-// click btn reports
+// click btn reportes
     $("#btn-reports").addEventListener("click", () =>
     showVista("reports")
     );
@@ -367,16 +369,26 @@ const initializeApp = () => {
             renderCategories(getDataStorage("categories"))
     })
 //cancela la edicion de la categoria
-    $("#btn-cancel-categories").addEventListener("click",() =>{
+    $("#btn-cancel-categories").addEventListener("click", () =>{
         showVista("category-section")
     })
-/*  $("#filter-type").addEventListener ("change", filters)
 
-    $("#filter-category").addEventListener ("change", filters)
+//oculta el panel de los filtros
+    $("#hidden-filters").addEventListener("click", (e) =>{
+        e.preventDefault()
+        $("#hidden-filters").classList.add("is-hidden")
+        $("#panel-filters").classList.add("is-hidden")
+        $("#show-filters").classList.remove("is-hidden")
+    })
 
-    $("#filter-date").addEventListener ("change", filters)
+//aparecen los filtros de nuevo
+    $("#show-filters").addEventListener("click", (e) =>{
+        e.preventDefault()
+        $("#show-filters").classList.add("is-hidden")
+        $("#panel-filters").classList.remove("is-hidden")
+        $("#hidden-filters").classList.remove("is-hidden")
+    })
 
-    $("#filter-order").addEventListener ("change", filters) */
 };
 
 
