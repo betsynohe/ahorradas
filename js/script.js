@@ -291,7 +291,13 @@ const generateBalance = (operations) => {
     $("#total-balance").innerHTML = `<span class="${className}">${symbol} $ ${Math.abs(balance)}</span>`;
 }
 
-
+//funcion para que este el dia actual en los imputs
+const dateInput = () => {
+    const inputsFecha = document.querySelectorAll('input[type="date"]');
+        inputsFecha.forEach((input) => {
+        input.valueAsDate = new Date();
+    });
+};
 
 
 
@@ -304,7 +310,7 @@ const initializeApp = () => {
     renderOperations(allOperations)
     generateBalance(allOperations)
     getBalance(allOperations)
-    
+    dateInput ()
 /* boton del menu de hamburguesa */
     $('.navbar-burger').addEventListener('click', () => {
     if ($('.navbar-burger').classList.contains('is-active')){
@@ -318,19 +324,25 @@ const initializeApp = () => {
     })
 
 // click btn categorias
-    $("#btn-categories").addEventListener("click", () =>
-    showVista("category-section")
-    );
+    $("#btn-categories").addEventListener("click", () => {
+        showVista("category-section")
+        renderOperations(allOperations) 
+        renderCategories(allCategories)
+    });
 
 // click btn balance 
-    $("#btn-balance").addEventListener("click", () =>
-    showVista("balance-container")
-    );
+    $("#btn-balance").addEventListener("click", () => {
+        showVista("balance-container")
+        renderOperations(allOperations) 
+        renderCategories(allCategories)
+    });
 
 // click btn reportes
-    $("#btn-reports").addEventListener("click", () =>
-    showVista("reports")
-    );
+    $("#btn-reports").addEventListener("click", () => {
+        showVista("reports")
+        renderOperations(allOperations) 
+        renderCategories(allCategories)
+    });
 
 // boton para nueva operacion
     $("#new-operation-btn").addEventListener("click", () =>
