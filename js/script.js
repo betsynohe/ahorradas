@@ -333,9 +333,9 @@ const summaryByCategories = (operations, categories) => {
             }
         }
         if (type === "ganancia") {
-            categoryTotals[category].profit += amount;
+            categoryTotals[category].profit += parseFloat(amount);
         } else if (type === "gasto") {
-            categoryTotals[category].expense += amount;
+            categoryTotals[category].expense += parseFloat(amount);
         }
     }
     
@@ -385,7 +385,7 @@ const summaryByMonths = (operations) => {
     const monthTotals = {}
     for (const { date, type, amount } of operations) {
         const currentDate = new Date(date)
-        const monthYear = `${String(currentDate.getMonth() + 1).padStart(2, '0')}/${currentDate.getFullYear()}`
+        const monthYear = `${String(currentDate.getMonth() + 1)}/${currentDate.getFullYear()}`
         if(!monthTotals[monthYear]){
             monthTotals[monthYear] = {
                 profit: 0,
@@ -393,9 +393,9 @@ const summaryByMonths = (operations) => {
             }
         }
         if (type === "ganancia"){
-            monthTotals[monthYear].profit += amount
+            monthTotals[monthYear].profit += parseFloat(amount)
         } else if (type === "gasto") {
-            monthTotals[monthYear].expense += amount
+            monthTotals[monthYear].expense += parseFloat(amount)
         }
     }
     let maxMonthProfits = ""
@@ -436,27 +436,24 @@ const totalsForCategory = (operations, categories) => {
                 }
             }
             if (type === "ganancia") {
-                balanceByCategory[name].profit += amount
-                balanceByCategory[name].balance += amount
+                balanceByCategory[name].profit += parseFloat(amount)
+                balanceByCategory[name].balance += parseFloat(amount)
             } else if (type === "gasto") {
-                balanceByCategory[name].expense += amount
-                balanceByCategory[name].balance -= amount
+                balanceByCategory[name].expense += parseFloat(amount)
+                balanceByCategory[name].balance -= parseFloat(amount)
             }
         }
     }
     return balanceByCategory
 }
-
+// genera el total es html
 const generateTotalsForCategory = (operations, categories) => {
     const balanceByCategory = totalsForCategory(operations, categories)
-    
-    let tableContent = cleanContainers(["#totals-all-categories"])
-    
+    cleanContainers(["#totals-all-categories"])
     for (const name in balanceByCategory) {
         const { profit, expense, balance } = balanceByCategory[name]
-
         let symbol = balance < 0 ? "-" : ""
-        const tableRow = `
+        $("#totals-all-categories").innerHTML += `
         <section
         class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
         <article class="column has-text-weight-semibold">
@@ -480,16 +477,14 @@ const generateTotalsForCategory = (operations, categories) => {
             </p>
         </article>
     </section>`
-        tableContent += tableRow
     }
-    $("#totals-all-categories").innerHTML += tableContent
 }
-
+//totales por mes
 const totalsPerMonth = (operations) => {
     const balancePerMonth = {}
     for (const { date, type, amount } of operations) {
         const currentDate = new Date(date)
-        const monthYear = `${String(currentDate.getMonth() + 1).padStart(2, '0')}/${currentDate.getFullYear()}`
+        const monthYear = `${String(currentDate.getMonth() + 1)}/${currentDate.getFullYear()}`
 
         if (!balancePerMonth[monthYear]){
             balancePerMonth[monthYear] = {
@@ -499,29 +494,24 @@ const totalsPerMonth = (operations) => {
             }
         }
         if (type === "ganancia") {
-            balancePerMonth[monthYear].profits += amount
-            balancePerMonth[monthYear].total += amount
+            balancePerMonth[monthYear].profits += parseFloat(amount)
+            balancePerMonth[monthYear].balance += parseFloat(amount)
         } else if (type === "gasto") {
-            balancePerMonth[monthYear].expenses += amount
-            balancePerMonth[monthYear].total -= amount
+            balancePerMonth[monthYear].expenses += parseFloat(amount)
+            balancePerMonth[monthYear].balance -= parseFloat(amount)
         }
     }
     return balancePerMonth
 }
-
+//genera el total en html
 const generateTotalsPerMonth = (operations) => {
-
     const balancePerMonth = totalsPerMonth(operations)
-    let tableContent = cleanContainers(["#totals-all-months"])
-
+    cleanContainers(["#totals-all-months"])
     for (const monthYear in balancePerMonth) {
         const { profit, expense, balance } = balancePerMonth[monthYear]
-        
         let symbol = balance < 0 ? "-" : ""
-       
-        const tableRow = `
-        <section
-            class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
+        $("#totals-all-months").innerHTML +=`
+        <section class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
             <article class="column has-text-weight-semibold">
                 <p>
                 ${monthYear}
@@ -543,9 +533,7 @@ const generateTotalsPerMonth = (operations) => {
                 </p>
             </article>
         </section>`
-        tableContent += tableRow
     }
-    $("#totals-all-months").innerHTML += tableContent
 }
 
 
