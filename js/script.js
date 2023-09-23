@@ -536,6 +536,70 @@ const generateTotalsPerMonth = (operations) => {
     }
 }
 
+/* FILTROS DE LA VISTA DE BALANCE */
+
+// FILTERS
+
+const filters = () => {
+    const type = $("#filter-type").value
+    const category = $("#filter-category").value
+    const date = new Date($(".date").value.replace(/-/g, '/'))
+    const filterS = $("#filter-order").value
+
+    const filterType = getDataStorage("operations").filter((operation) => {
+        if (type === "todos") {
+            return operation
+        }
+        return type === operation.type
+    })
+
+    const filterCategory = filterType.filter((operation) => {
+        if (category === "todas") {
+            return operation
+        } else {
+            return category === operation.category
+        }
+    })
+
+    const filterDate = filterCategory.filter((operation) => {
+        return new Date(operation.date).getDate() >= date.getDate() && new Date(operation.date).getMonth() >= date.getMonth()
+    })
+
+const filterSort = filterDate.sort((a, b) => {
+        if (filterS === "mas-reciente"){
+            return new Date(b.date).getDate() - new Date(a.date).getDate()
+        } 
+        if (filterS === "menos-reciente") {
+            return new Date(a.date).getDate() - new Date(b.date).getDate()
+        }
+        if (filterS === "mayor-monto") {
+            return b.amount - a.amount
+        }
+        if (filterS === "menor-monto") {
+            return a.amount - b.amount
+        }
+        if (filterS === "a-z") {
+            if (a.description.localeCompare(b.description)) {
+                return -1
+            }
+        }
+        else {
+            if (b.description.localeCompare(a.description)) {
+                return 1
+            }
+        }
+})
+
+    getBalance(filterSort)
+    renderOperations(filterSort)
+if (filterSort.length) {
+    $("#balance-no-results").classList.add("is-hidden")
+    $("#there-are-operations").classList.remove("is-hidden")
+} else{
+    $("#balance-no-results").classList.remove("is-hidden")
+    $("#there-are-operations").classList.add("is-hidden")
+}
+}
 
 
 
@@ -559,7 +623,8 @@ const initializeApp = () => {
     generateBalance(allOperations)
     getBalance(allOperations)
     renderReports()
-    dateInput ()
+    dateInput()
+    filters()
 
 /* boton del menu de hamburguesa */
     $('.navbar-burger').addEventListener('click', () => {
@@ -633,6 +698,7 @@ const initializeApp = () => {
             showVista("category-section")
             renderCategories(getDataStorage("categories"))
     })
+
 //cancela la edicion de la categoria
     $("#btn-cancel-categories").addEventListener("click", () =>{
         showVista("category-section")
@@ -654,6 +720,11 @@ const initializeApp = () => {
         $("#hidden-filters").classList.remove("is-hidden")
     })
 
+//funcion de los selects del filtro
+    $("#filter-type").addEventListener ("change", filters)
+    $("#filter-category").addEventListener ("change", filters)
+    $(".date").addEventListener ("change", filters)
+    $("#filter-order").addEventListener ("change", filters)
 };
 
 
