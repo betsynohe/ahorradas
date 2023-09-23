@@ -133,7 +133,7 @@
                                     </label>
                                     <section class="control">
                                         <section class="select is-fullwidth">
-                                            <select id="filter-category">
+                                            <select name="category" id="filter-category">
                                                 <!-- aca van las actegorias del filtro  -->
                                             </select>
                                         </section>
@@ -287,10 +287,10 @@
                                 <section class="control">
                                     <section class="select is-fullwidth">
                                         <select id="type-operation">
-                                            <option value="Gasto">
+                                            <option value="gasto">
                                                 Gasto
                                             </option>
-                                            <option value="Ganancia">
+                                            <option value="ganancia">
                                                 Ganancia
                                             </option>
                                         </select>
@@ -407,7 +407,7 @@
                             </h4>
                         </article>
                     </section>
-                    <div class="mt-4 pt-4 mb-4">
+                    <div id="" class="mt-4 pt-4 mb-4 is-hidden no-reports">
                         <figure class="image is-3by1">
                             <img src="img/undraw_charts_re_5qe9.svg" />
                         </figure>
@@ -418,238 +418,143 @@
                             Prueba agregando más operaciones
                         </p>
                     </div>
+                    <!-- _______ seccion con Reportes_______ -->
+                    <!-- Resumen -->
+                    <section id="reports-table" class="box is-two-thirds">
+                        <section class="ml-5 mb-6">
+                            <h6 class="is-size-4 mb-5 has-text-weight-bold">
+                                Resumen
+                            </h6>
+                            <article class="columns is-vcentered is-flex is-justify-content-center is-align-items-center">
+                                <h5 class="column has-text-weight-semibold is-4">
+                                    Categoría con mayor ganancia
+                                </h5>
+                                <article class="column has-text-right is-5">
+                                    <p id="highest-category-profits" class="tag is-primary is-light">
+    
+                                    </p>
+                                </article>
+                                <p id="total-hg-category-profits" class="column has-text-right has-text-success mr-2">
+    
+                                </p>
+                            </article>
+                            <article class="columns is-flex is-justify-content-center is-align-items-center">
+                                <h5 class="column has-text-weight-semibold is-4">
+                                    Categoría con mayor gasto
+                                </h5>
+                                <article class="column has-text-right is-5">
+                                    <p id="highest-category-expenses" class="tag is-primary is-light">
+                                        
+                                    </p>
+                                </article>
+                                <p id="total-hg-category-expenses" class="column has-text-right has-text-danger has-text-weight-bold mr-2">
+                                    
+                                </p>
+                            </article>
+                            <article class="columns is-flex is-justify-content-center is-align-items-center">
+                                <h5 class="column has-text-weight-semibold is-4">
+                                    Categoría con mayor balance
+                                </h5>
+                                <article class="column has-text-right is-5">
+                                    <p id="highest-category-balance" class="tag is-primary is-light">
+                                        
+                                    </p>
+                                </article>
+                                <p id="total-hg-category-balance" class="column has-text-right has-text-weight-bold mr-2">
+                                    
+                                </p>
+                            </article>
+                            <article class="columns is-flex is-justify-content-center is-align-items-center">
+                                <h5 class="column has-text-weight-semibold is-4">
+                                    Mes con mayor ganancia
+                                </h5>
+                                <p id="month-highest-profit" class="column has-text-right has-text-gray is-5">
+                                    
+                                </p>
+                                <p id="total-month-hg-profit" class="column has-text-right has-text-success has-text-weight-bold mr-2">
+                                    
+                                </p>
+                            </article>
+                            <article class="columns is-flex is-justify-content-center is-align-items-center">
+                                <h5 class="column has-text-weight-semibold is-4">
+                                    Mes con mayor gasto
+                                </h5>
+                                <p id="month-highest-expenditure" class="column has-text-right has-text-gray is-5">
+                                    
+                                </p>
+                                <p id="total-month-hg-expenditure" class="column has-text-right has-text-danger has-text-weight-bold mr-2">
+                                    
+                                </p>
+                            </article>
+                        </section>
+                        <!-- Totales por categorías -->
+                        <section class="mb-4">
+                            <h6 class="is-size-4 mb-5 has-text-weight-bold">
+                                Totales por Categoría
+                            </h6>
+                            <section
+                                class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
+                                <article class="column has-text-weight-bold">
+                                    <p>
+                                        Categoría
+                                    </p>
+                                </article>
+                                <article class="column has-text-right has-text-weight-bold">
+                                    <p>
+                                        Ganancias
+                                    </p>
+                                </article>
+                                <article class="column has-text-right has-text-weight-bold">
+                                    <p>
+                                        Gastos
+                                    </p>
+                                </article>
+                                <article class="column has-text-right has-text-weight-bold">
+                                    <p>
+                                        Balance
+                                    </p>
+                                </article>
+                            </section>
+                            <section id="totals-all-categories">
+                                <!-- aca van desde js -->
+                            </section>
+                        </section>
+                                <!-- Totales por mes -->
+                                <section class="mb-4">
+                                    <h6 class="is-size-4 mb-5 has-text-weight-bold">
+                                        Totales por mes
+                                    </h6>
+                                    <section
+                                        class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
+                                        <article class="column has-text-weight-bold">
+                                            <p>
+                                                Mes
+                                            </p>
+                                        </article>
+                                        <article class="column has-text-right has-text-weight-bold">
+                                            <p>
+                                                Ganancias
+                                            </p>
+                                        </article>
+                                        <article class="column has-text-right has-text-weight-bold">
+                                            <p>
+                                                Gastos
+                                            </p>
+                                        </article>
+                                        <article class="column has-text-right has-text-weight-bold">
+                                            <p>
+                                                Balance
+                                            </p>
+                                        </article>
+                                    </section>
+                                    <section id="totals-all-months">
+                                        <!-- aca van desde js -->
+                                    </section>
+                                </section>
+                    </section>
                 </section>
             </section>
         </section>
-        <!-- _______ seccion con Reportes_______ -->
-        <section id="reports-table" class="section is-flex is-justify-content-center is-hidden">
-            <section class="column is-7-widescreen is-8-desktop pt-0">
-                <section class="box is-two-thirds">
-                    <section class="columns">
-                        <article class="column">
-                            <h4 class="is-size-3 has-text-weight-bold">
-                                Reportes
-                            </h4>
-                        </article>
-                    </section>
-                    <!-- Resumen -->
-                    <section class="ml-5 mb-6">
-                        <h6 class="is-size-4 mb-5 has-text-weight-bold">
-                            Resumen
-                        </h6>
-                        <article class="columns is-vcentered is-flex is-justify-content-center is-align-items-center">
-                            <h5 class="column has-text-weight-semibold is-4">
-                                Categoría con mayor ganancia
-                            </h5>
-                            <article class="column has-text-right is-5">
-                                <p id="highest-category-profits" class="tag is-primary is-light">
-
-                                </p>
-                            </article>
-                            <p id="total-hg-category-profits" class="column has-text-right has-text-success mr-2">
-
-                            </p>
-                        </article>
-                        <article class="columns is-flex is-justify-content-center is-align-items-center">
-                            <h5 class="column has-text-weight-semibold is-4">
-                                Categoría con mayor gasto
-                            </h5>
-                            <article class="column has-text-right is-5">
-                                <p id="highest-category-expenses" class="tag is-primary is-light">
-                                    
-                                </p>
-                            </article>
-                            <p id="total-hg-category-expenses" class="column has-text-right has-text-danger has-text-weight-bold mr-2">
-                                
-                            </p>
-                        </article>
-                        <article class="columns is-flex is-justify-content-center is-align-items-center">
-                            <h5 class="column has-text-weight-semibold is-4">
-                                Categoría con mayor balance
-                            </h5>
-                            <article class="column has-text-right is-5">
-                                <p id="highest-category-balance" class="tag is-primary is-light">
-                                    
-                                </p>
-                            </article>
-                            <p id="total-hg-category-balance" class="column has-text-right has-text-weight-bold mr-2">
-                                
-                            </p>
-                        </article>
-                        <article class="columns is-flex is-justify-content-center is-align-items-center">
-                            <h5 class="column has-text-weight-semibold is-4">
-                                Mes con mayor ganancia
-                            </h5>
-                            <p class="column has-text-right has-text-gray is-5">
-                                02/10/2022
-                            </p>
-                            <p class="column has-text-right has-text-success has-text-weight-bold mr-2">
-                                $ +1
-                            </p>
-                        </article>
-                        <article class="columns is-flex is-justify-content-center is-align-items-center">
-                            <h5 class="column has-text-weight-semibold is-4">
-                                Mes con mayor gasto
-                            </h5>
-                            <p class="column has-text-right has-text-gray is-5">
-                                02/10/2022
-                            </p>
-                            <p class="column has-text-right has-text-danger has-text-weight-bold mr-2">
-                                $-1
-                            </p>
-                        </article>
-                    </section>
-                    <!-- Totales por categorías -->
-                    <section class="ml-5 mr-2 mt-6">
-                        <h6 class="is-size-4 mb-5 has-text-weight-bold">
-                            Totales por categorías
-                        </h6>
-                        <section class="columns  is-vcentered is-flex is-justify-content-center is-align-items-center">
-                            <article class="column has-text-weight-bold">
-                                <p>
-                                    Categoría
-                                </p>
-                            </article>
-                            <article class="column has-text-right has-text-weight-bold">
-                                <p>
-                                    Ganancias
-                                </p>
-                            </article>
-                            <article class="column has-text-right has-text-weight-bold">
-                                <p>
-                                    Gastos
-                                </p>
-                            </article>
-                            <article class="column has-text-right has-text-weight-bold">
-                                <p>
-                                    Balance
-                                </p>
-                            </article>
-                        </section>
-                        <section>
-                            <section class="columns  is-mobile is-flex is-justify-content-center is-align-items-center">
-                                <article class="column has-text-weight-semibold">
-                                    <p>
-                                        Comida
-                                    </p>
-                                </article>
-                                <article class="column has-text-right">
-                                    <p class="has-text-right has-text-success has-text-weight-bold">
-                                        $ +1
-                                    </p>
-                                </article>
-                                <article class="column has-text-right has-text-gray">
-                                    <p class="has-text-right has-text-danger has-text-weight-bold">
-                                        $ -1
-                                    </p>
-                                </article>
-                                <article class="column has-text-right has-text-weight-bold has-text-success">
-                                    <p class="has-text-right has-text-weight-bold ">
-                                        $ -1
-                                    </p>
-                                </article>
-                            </section>
-                            <section class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
-                                <article class="column has-text-weight-semibold">
-                                    <p>
-                                        Servicios
-                                    </p>
-                                </article>
-                                <article class="column  has-text-right">
-                                    <p class="has-text-right has-text-success has-text-weight-bold">
-                                        $ +1
-                                    </p>
-                                </article>
-                                <article class="column has-text-right has-text-gray">
-                                    <p class="has-text-right has-text-danger has-text-weight-bold">
-                                        $ -1
-                                    </p>
-                                </article>
-                                <article class="column has-text-right has-text-weight-bold has-text-success">
-                                    <p class="has-text-right has-text-weight-bold">
-                                        $ -1
-                                    </p>
-                                </article>
-                            </section>
-                            <!-- Totales por mes -->
-                            <section class="mb-4">
-                                <h6 class="is-size-4 mb-5 has-text-weight-bold">
-                                    Totales por mes
-                                </h6>
-                                <section
-                                    class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
-                                    <article class="column has-text-weight-bold">
-                                        <p>
-                                            Mes
-                                        </p>
-                                    </article>
-                                    <article class="column has-text-right has-text-weight-bold">
-                                        <p>
-                                            Ganancias
-                                        </p>
-                                    </article>
-                                    <article class="column has-text-right has-text-weight-bold">
-                                        <p>
-                                            Gastos
-                                        </p>
-                                    </article>
-                                    <article class="column has-text-right has-text-weight-bold">
-                                        <p>
-                                            Balance
-                                        </p>
-                                    </article>
-                                </section>
-                                <section>
-                                    <section
-                                        class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
-                                        <article class="column has-text-weight-semibold">
-                                            <p>
-                                                8/2023
-                                            </p>
-                                        </article>
-                                        <article class="column has-text-right">
-                                            <p class="has-text-right has-text-success has-text-weight-bold">
-                                                $ +1
-                                            </p>
-                                        </article>
-                                        <article class="column has-text-right has-text-gray">
-                                            <p class="has-text-right has-text-danger has-text-weight-bold">
-                                                $ -1
-                                            </p>
-                                        </article>
-                                        <article class="column has-text-right has-text-weight-bold has-text-success">
-                                            <p class="has-text-right has-text-weight-bold">
-                                                $ -1
-                                            </p>
-                                        </article>
-                                    </section>
-                                    <section
-                                        class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
-                                        <article class="column has-text-weight-semibold ">
-                                            <p>
-                                                8/2023
-                                            </p>
-                                        </article>
-                                        <article class="column has-text-right">
-                                            <p class="has-text-right has-text-success has-text-weight-bold">
-                                                $ +1
-                                            </p>
-                                        </article>
-                                        <article class="column has-text-right has-text-gray">
-                                            <p class="has-text-right has-text-danger has-text-weight-bold">
-                                                $ -1
-                                            </p>
-                                        </article>
-                                        <article class="column has-text-right has-text-weight-bold has-text-success">
-                                            <p class="has-text-right has-text-weight-bold">
-                                                $ -1
-                                            </p>
-                                        </article>
-                                    </section>
-                                </section>
-                            </section>
-                        </section>
-                    </section>
     </main>
     <script src="js/script.js"></script>
 </body>

@@ -165,8 +165,8 @@ const renderOperations = (operations) => {
         $("#balance-no-results").classList.add("is-hidden");
         $("#there-are-operations").classList.remove("is-hidden");
         for (const { id, description, amount, type, category, date} of operations) {
-            const spentAmount = type === "Ganancia" ? "has-text-success" : "has-text-danger";
-            const gainAmount = type === "Ganancia" ? "+" : "-";
+            const spentAmount = type === "ganancia" ? "has-text-success" : "has-text-danger";
+            const gainAmount = type === "ganancia" ? "+" : "-";
             const categorySelected = getDataStorage("categories").find(catego => catego.id === category)
             $("#operations-table").innerHTML += ` <section class="columns is-multiline is-mobile">
             <article class="column has-text-weight-semibold is-6-mobile">
@@ -266,11 +266,11 @@ const getBalance = (operations) => {
 
      //render balance
     for (const { type, amount } of operations){
-        if (type === "Ganancia") {
+        if (type === "ganancia") {
         profit += parseFloat(amount);
         balance += parseFloat(amount);
     }
-        if (type === "Gasto") {
+        if (type === "gasto") {
         expense -= parseFloat(amount);
         balance -= parseFloat(amount);
     }
@@ -307,18 +307,17 @@ const renderReports = () => {
         }
     }
 
-    if (hasProfit && hasExpenditure) {
+    if (hasProfit && hasExpenditure) {console.log()
         $("#reports-table").classList.remove("is-hidden")
-        $("#reports").classList.add("is-hidden")
+        $(".no-reports").classList.add("is-hidden")
         summaryByCategories(currentOperations, allCategories)
         summaryByMonths(currentOperations)
         totalsForCategory(currentOperations, allCategories)
         totalsPerMonth(currentOperations)
         generateTotalsForCategory(currentOperations, allCategories)
         generateTotalsPerMonth(currentOperations)
-
     } else {
-        $("#reports").classList.remove("is-hidden")
+        $(".no-reports").classList.remove("is-hidden")
         $("#reports-table").classList.add("is-hidden")
     }
 }
@@ -381,6 +380,174 @@ const summaryByCategories = (operations, categories) => {
     }
 }
 
+//reportes por mes 
+const summaryByMonths = (operations) => {
+    const monthTotals = {}
+    for (const { date, type, amount } of operations) {
+        const currentDate = new Date(date)
+        const monthYear = `${String(currentDate.getMonth() + 1).padStart(2, '0')}/${currentDate.getFullYear()}`
+        if(!monthTotals[monthYear]){
+            monthTotals[monthYear] = {
+                profit: 0,
+                expense: 0, 
+            }
+        }
+        if (type === "ganancia"){
+            monthTotals[monthYear].profit += amount
+        } else if (type === "gasto") {
+            monthTotals[monthYear].expense += amount
+        }
+    }
+    let maxMonthProfits = ""
+    let maxAmountProfits = 0
+    let maxMonthExpenses = ""
+    let maxAmountExpenses = 0
+
+    for (const monthYear in monthTotals) {
+        const { profit, expense } = monthTotals[monthYear]
+
+        if (profit > maxAmountProfits) {
+            maxAmountProfits = profit
+            maxMonthProfits = monthYear
+        }
+        if (expense > maxAmountExpenses) {
+            maxAmountExpenses = expense
+            maxMonthExpenses = monthYear
+        }
+    }
+    $("#month-highest-profit").innerHTML = maxMonthProfits
+    $("#total-month-hg-profit").innerHTML = `+$${maxAmountProfits}`
+    $("#month-highest-expenditure").innerHTML = maxMonthExpenses
+    $("#total-month-hg-expenditure").innerHTML = `-$${maxAmountExpenses}`
+}
+
+//totales por categorias
+const totalsForCategory = (operations, categories) => {
+    const balanceByCategory = {}
+    for (const { category, type, amount } of operations) {
+        const categoryFiltered = categories.find(cat => cat.id === category)
+        if (categoryFiltered) {
+            const { name } = categoryFiltered
+            if (!balanceByCategory[name]) {
+                balanceByCategory[name] = {
+                    profit: 0,
+                    expense: 0,
+                    balance: 0
+                }
+            }
+            if (type === "ganancia") {
+                balanceByCategory[name].profit += amount
+                balanceByCategory[name].balance += amount
+            } else if (type === "gasto") {
+                balanceByCategory[name].expense += amount
+                balanceByCategory[name].balance -= amount
+            }
+        }
+    }
+    return balanceByCategory
+}
+
+const generateTotalsForCategory = (operations, categories) => {
+    const balanceByCategory = totalsForCategory(operations, categories)
+    
+    let tableContent = cleanContainers(["#totals-all-categories"])
+    
+    for (const name in balanceByCategory) {
+        const { profit, expense, balance } = balanceByCategory[name]
+
+        let symbol = balance < 0 ? "-" : ""
+        const tableRow = `
+        <section
+        class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
+        <article class="column has-text-weight-semibold">
+            <p>
+            ${name}
+            </p>
+        </article>
+        <article class="column has-text-right">
+            <p class="has-text-right has-text-success has-text-weight-bold">
+            +$ ${profit}
+            </p>
+        </article>
+        <article class="column has-text-right has-text-gray">
+            <p class="has-text-right has-text-danger has-text-weight-bold">
+            -$ ${expense}
+            </p>
+        </article>
+        <article class="column has-text-right has-text-weight-bold has-text-success">
+            <p class="has-text-right has-text-weight-bold">
+            ${symbol}$${Math.abs(balance)}
+            </p>
+        </article>
+    </section>`
+        tableContent += tableRow
+    }
+    $("#totals-all-categories").innerHTML += tableContent
+}
+
+const totalsPerMonth = (operations) => {
+    const balancePerMonth = {}
+    for (const { date, type, amount } of operations) {
+        const currentDate = new Date(date)
+        const monthYear = `${String(currentDate.getMonth() + 1).padStart(2, '0')}/${currentDate.getFullYear()}`
+
+        if (!balancePerMonth[monthYear]){
+            balancePerMonth[monthYear] = {
+                profit: 0,
+                expense: 0,
+                balance: 0
+            }
+        }
+        if (type === "ganancia") {
+            balancePerMonth[monthYear].profits += amount
+            balancePerMonth[monthYear].total += amount
+        } else if (type === "gasto") {
+            balancePerMonth[monthYear].expenses += amount
+            balancePerMonth[monthYear].total -= amount
+        }
+    }
+    return balancePerMonth
+}
+
+const generateTotalsPerMonth = (operations) => {
+
+    const balancePerMonth = totalsPerMonth(operations)
+    let tableContent = cleanContainers(["#totals-all-months"])
+
+    for (const monthYear in balancePerMonth) {
+        const { profit, expense, balance } = balancePerMonth[monthYear]
+        
+        let symbol = balance < 0 ? "-" : ""
+       
+        const tableRow = `
+        <section
+            class="columns is-mobile is-flex is-justify-content-center is-align-items-center">
+            <article class="column has-text-weight-semibold">
+                <p>
+                ${monthYear}
+                </p>
+            </article>
+            <article class="column has-text-right">
+                <p class="has-text-right has-text-success has-text-weight-bold">
+                +$ ${profit}
+                </p>
+            </article>
+            <article class="column has-text-right has-text-gray">
+                <p class="has-text-right has-text-danger has-text-weight-bold">
+                -$ ${expense}
+                </p>
+            </article>
+            <article class="column has-text-right has-text-weight-bold has-text-success">
+                <p class="has-text-right has-text-weight-bold">
+                ${symbol}$${Math.abs(balance)}
+                </p>
+            </article>
+        </section>`
+        tableContent += tableRow
+    }
+    $("#totals-all-months").innerHTML += tableContent
+}
+
 
 
 
@@ -403,7 +570,9 @@ const initializeApp = () => {
     renderOperations(allOperations)
     generateBalance(allOperations)
     getBalance(allOperations)
+    renderReports()
     dateInput ()
+
 /* boton del menu de hamburguesa */
     $('.navbar-burger').addEventListener('click', () => {
     if ($('.navbar-burger').classList.contains('is-active')){
@@ -433,18 +602,20 @@ const initializeApp = () => {
 // click btn reportes
     $("#btn-reports").addEventListener("click", () => {
         showVista("reports")
+        renderReports()
         renderOperations(allOperations) 
         renderCategories(allCategories)
     });
 
 // boton para nueva operacion
-    $("#new-operation-btn").addEventListener("click", () =>
+    $("#new-operation-btn").addEventListener("click", () => 
     showVista("new-operation-container")
     );
 
 //agrega la nueva operacion
     $("#btn-add-operation").addEventListener("click", () => {
     addOperationForm();
+    renderReports()
     showVista("there-are-operations")
     showVista("balance-container")
     }); 
@@ -452,6 +623,7 @@ const initializeApp = () => {
 //edita la operacion
     $("#btn-edit-operation").addEventListener("click", () =>{
     getEditOperation()
+    renderReports()
     $("#edit-operation-container").classList.add("is-hidden")
     });
 
