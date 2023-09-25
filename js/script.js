@@ -223,7 +223,7 @@ const deleteOperation = (id) => {
     );
     setDataStorage("operations", currentOperations);
     renderOperations(currentOperations);
-    getBalance(allOperations)
+    getBalance(getDataStorage(allOperations))
 };
 
 //editar operaciones
@@ -471,7 +471,7 @@ const generateTotalsForCategory = (operations, categories) => {
             -$ ${expense}
             </p>
         </article>
-        <article class="column has-text-right has-text-weight-bold has-text-success">
+        <article class="column has-text-right has-text-weight-bold ">
             <p class="has-text-right has-text-weight-bold">
             ${symbol}$${Math.abs(balance)}
             </p>
@@ -527,7 +527,7 @@ const generateTotalsPerMonth = (operations) => {
                 -$ ${expense}
                 </p>
             </article>
-            <article class="column has-text-right has-text-weight-bold has-text-success">
+            <article class="column has-text-right has-text-weight-bold">
                 <p class="has-text-right has-text-weight-bold">
                 ${symbol}$${Math.abs(balance)}
                 </p>
@@ -579,14 +579,10 @@ const filterSort = filterDate.sort((a, b) => {
             return a.amount - b.amount
         }
         if (filterS === "a-z") {
-            if (a.description.localeCompare(b.description)) {
-                return -1
-            }
+            a.description.localeCompare(b.description)
         }
-        else {
-            if (b.description.localeCompare(a.description)) {
-                return 1
-            }
+        if (filterS === "z-a") {
+            b.description.localeCompare(a.description)
         }
 })
 
